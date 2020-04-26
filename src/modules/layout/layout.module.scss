@@ -1,0 +1,24 @@
+@import '../../common/styles/common.module.scss';
+
+.container {
+  margin: 0 auto;
+  max-width: 100%;
+  padding: $default-padding;
+  width: 1400px;
+}
+
+.layout {
+  @extend .container;
+}
+
+.header {
+  background-color: yellow;
+  display: block;
+  height: 80px;
+}
+
+.footer {
+  background-color: red;
+  display: block;
+  height: 40px;
+}

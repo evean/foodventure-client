@@ -1,0 +1,80 @@
+.recipeViewTitle {
+  margin-bottom: 40px;
+}
+
+.recipeViewSubTitle {
+  margin: 20px 0;
+}
+
+.formRow {
+  display: block;
+  margin: 5px 0;
+  width: 100%;
+}
+
+.addBtn {
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  color: blue;
+  margin-top: 5px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.deleteBtn {
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+
+.rowIcon {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  max-width: 50px;
+  min-width: 30px;
+}
+
+.rowWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkboxWrapper {
+  display: flex;
+  flex-wrap: wrap;
+
+  > div {
+    margin-right: 20px;
+  }
+}
+
+.recipeListItem {
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: block;
+  margin: 10px 0;
+  padding: 0;
+
+  &:first-of-type {
+    margin-top: 30px;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

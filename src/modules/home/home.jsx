@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const Home = () => {
   return (
     <>
-      <Link to="/recipe-form">Create new recipe</Link>
+      HOME!!!
     </>
   );
 };

@@ -5,11 +5,12 @@ import style from './recipe-cards.module.scss';
 
 export const RecipeCards = ({
   data,
-  limit
+  limit,
+  title
 }) => {
   const renderCards = data => {
-    console.log('rendering', data)
-    return data.map(card =>
+    const dataWithLimit = data.slice(0, limit);
+    return dataWithLimit.map(card =>
       <Card
         key={card.name}
         data={card}
@@ -19,6 +20,7 @@ export const RecipeCards = ({
 
   return (
     <div className={style.recipeCards}>
+      <h2>{title}</h2>
       {renderCards(data)}
     </div>
   );

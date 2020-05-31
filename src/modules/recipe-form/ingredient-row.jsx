@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -14,6 +14,8 @@ export const IngredientRow = ({
   onDelete,
   value
 }) => {
+  const [ selectedIngredient, setSelectedIngredient ] = useState([]);
+
   useEffect(() => {
     if (!value.name) {
       onChange({
@@ -22,6 +24,8 @@ export const IngredientRow = ({
         ingredientId: ingredients[0].id,
         id: value.id
       })
+    } else {
+      setSelectedIngredient([ { name: value.name }]);
     }
   }, [ value ]);
 
@@ -35,6 +39,9 @@ export const IngredientRow = ({
   }
 
   const handleSelectIngredient = v => {
+    setSelectedIngredient(v);
+    if (!v.length) return;
+    
     const ingredient = ingredients.find(i => i.name === v[0].name);
     updateIngredient({
       ...ingredient
@@ -71,6 +78,7 @@ export const IngredientRow = ({
               ({ name: u.name })
             )}
             placeholder="Select"
+            selected={selectedIngredient}
           />
         </Col>
 

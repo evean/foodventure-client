@@ -11,10 +11,7 @@ export const StepRow = ({
   value
 }) => {
   const handleChange = e => {
-    onChange({
-      ...value,
-      content: e.target.value
-    });
+    onChange(e.target.value);
   }
 
   return (
@@ -26,7 +23,7 @@ export const StepRow = ({
             required
             placeholder="Enter instructions"
             onChange={handleChange}
-            value={value.content}
+            value={value}
           />  
         </Col>
 
@@ -45,5 +42,5 @@ export const StepRow = ({
 };
 
 StepRow.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.string
 };

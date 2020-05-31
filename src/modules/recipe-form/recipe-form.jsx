@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { IngredientRow } from './ingredient-row';
-import { StepRow } from './step-row';
+import { RecipeSection } from './recipe-section';
 import uuidv4 from 'uuid';
-import _isEmpty from "lodash/isEmpty";
-import _pick from "lodash/pick";
+import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 
 const style = require('./styles/recipe-form.module.scss');
 
 const DIFFICULTY_LEVELS = [ "Beginner", "Easy", "Intermediate", "Hard", "Professional" ];
 
-const getDefault = (num = 1) => {
-  return [ ...Array(num) ]
-    .map(i => ({
-      id: uuidv4()
-    }));
+const getDefaultSection = () => {
+  return {
+    id: uuidv4(),
+    ingredients: [],
+    steps: [ ...Array(5) ]
+  } 
 }
 
 export const RecipeForm = ({
@@ -28,52 +28,23 @@ export const RecipeForm = ({
 }) => {
   const defaultValue = {
     cuisineId: 1,
-    difficulty: 1
+    difficulty: 1,
+    dietTypes: []
   };
 
   const [ recipe, setRecipe ] = useState(value || defaultValue);
-  const [ steps, setSteps ] = useState(getDefault(5));
-  const [ selectedIngredients, setSelectedIngredients ] = useState([]);
+  const [ sections, setSections ] = useState([ getDefaultSection() ]);
 
   useEffect(() => {
     if (!_isEmpty(value)) {
-      setRecipe(value);
-      setSteps(parseStringToContent(value.content));
-      setSelectedIngredients(value.recipeIngredientsByRecipeId.nodes
-        .map(i => ({
-          amount: i.amount,
-          unit: i.unit,
-          ...i.ingredientByIngredientId
-        })));
+      setRecipe({
+        ...value,
+        dietTypes: _get(value, "recipeDietTypesByRecipeId.nodes", [])
+          .map(t => t.dietTypeByDietTypeId.id)
+      });
+      setSections(JSON.parse(value.content).sections || []);
     }
   }, [ value ]);
-
-  const handleAddIngredient = () => {
-    setSelectedIngredients([ ...selectedIngredients, getDefault()[0] ]);
-  }
-
-  const handleDeleteIngredient = id => {
-    setSelectedIngredients(selectedIngredients.filter(i => i.id !== id));
-  }
-
-  const handleAddStep = () => {
-    setSteps([ ...steps, getDefault() ]);
-  }
-
-  const handleDeleteStep = id => {
-    setSteps(steps.filter(s => s.id !== id));
-  }
-
-  const handleUpdateStep = v => {
-    setSteps(steps.map(i => i.id === v.id ? v : i));
-  }
-
-  const handleUpdateIngredient = v => {
-    console.log('updating ing', v)
-    setSelectedIngredients(
-      selectedIngredients.map(i => i.id === v.id ? v : i)
-    );
-  }
 
   const handleUpdateRecipeProperty = (id, v) => {
     setRecipe({
@@ -87,16 +58,19 @@ export const RecipeForm = ({
 
     const variables = {
       ...recipe,
-      content: {
-        steps: JSON.stringify({
-          steps: steps.map(s => s.content)
-        })
-      },
+      content: JSON.stringify({
+        sections: sections.map(s => ({
+          id: s.id,
+          steps: s.steps.filter(s => s && !!s.length),
+          ingredients: s.ingredients,
+          label: s.label
+        }))
+      }),
       id: Number(recipe.id)
     }
 
     const action = recipe.id ? onUpdate : onSave;
-    action({ variables });
+    action(variables);
   }
 
   const handleUpdateDietType = (e, item) => {
@@ -109,55 +83,6 @@ export const RecipeForm = ({
       ...recipe,
       dietTypes: selectedDietTypes
     });
-  }
-
-  const parseStringToContent = str => {
-    const content = JSON.parse(str);
-
-    return content.steps.map(s => ({
-      id: uuidv4(),
-      content: s
-    }));
-  }
-
-  const renderIngredients = () => {
-    return (
-      <>
-        {selectedIngredients.map(i => 
-          <IngredientRow
-            key={`ingredient_${i.id}`}
-            ingredients={ingredients}
-            value={i}
-            onChange={v => handleUpdateIngredient(v)}
-            onDelete={() => handleDeleteIngredient(i.id)}
-          />
-        )}
-
-        {renderAddButton("Add ingredient", handleAddIngredient)}
-      </>
-    );
-  }
-
-  const renderSteps = () => {
-    return (
-      <>
-        {steps.map((s, i) => (
-          <div key={`step_${s.id}`} className={style.rowWrapper}>
-            <div className={style.rowIcon}>
-              {(i + 1)}.
-            </div>
-            
-            <StepRow
-              value={s}
-              onChange={v => handleUpdateStep(v)}
-              onDelete={() => handleDeleteStep(s.id)}
-            />
-          </div>
-        ))}
-
-        {renderAddButton("Add step", handleAddStep)}
-      </>
-    );
   }
 
   const renderAddButton = (label, callback) => {
@@ -174,6 +99,42 @@ export const RecipeForm = ({
 
   const handleUpdateValue = id => e => {
     handleUpdateRecipeProperty(id, e.target.value);
+  }
+
+  const handleAddSection = () => {
+    setSections([
+      ...sections,
+      getDefaultSection()
+    ]);
+  }
+
+  const handleDeleteSection = id => {
+    setSections(sections.filter(s => s.id !== id));
+  }
+
+  const handleUpdateSection = (id, value) => {
+    setSections(sections.map(s => s.id !== id ? s : { ...s, ...value }));
+  }
+
+  const renderSections = () => {
+    return (
+      <>
+        <h5>Recipe parts</h5>
+        <div className={style.sectionsWrapper}>
+          {sections.map(s => (
+            <RecipeSection
+              key={s.id}
+              ingredients={ingredients}
+              onChange={(v) => handleUpdateSection(s.id, v)}
+              onDelete={() => handleDeleteSection(s.id)}
+              value={s}
+            />
+          ))}
+        </div>
+
+        {renderAddButton("Add recipe part", handleAddSection)}
+      </>
+    );
   }
 
   return (
@@ -266,24 +227,20 @@ export const RecipeForm = ({
           </Col>
         </Row>
 
-        <h5 className={style.recipeViewSubTitle}>Ingredients</h5>
-        {renderIngredients()}
-
-        <h5 className={style.recipeViewSubTitle}>Steps</h5>
-        {renderSteps()}
+        {renderSections()}
 
         <h5 className={style.recipeViewSubTitle}>Dietary type</h5>
         
         <div className={style.checkboxWrapper}>
           {dietTypes.map(d =>
             <Form.Group
-              key={d.id}
+              key={`dt_${d.id}`}
               controlId="formBasicCheckbox"
             >
               <Form.Check
                 type="checkbox"
                 label={d.name}
-                checked={(recipe.dietTypes || []).includes(d.id)}
+                checked={recipe.dietTypes.includes(d.id)}
                 onChange={e => handleUpdateDietType(e, d)}
               />
             </Form.Group>
@@ -313,7 +270,6 @@ export const RecipeForm = ({
         <Button
           variant="primary"
           type="submit"
-          disabled={!selectedIngredients.length || !steps.length}
         >
           {recipe.id ? "Update recipe" : "Save recipe"}
         </Button>

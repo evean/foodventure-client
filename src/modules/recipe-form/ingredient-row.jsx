@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'react-bootstrap';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import DeleteIcon from '@material-ui/icons/Delete';
-import uuidv4 from "uuid";
+
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const style = require('./styles/recipe-form.module.scss');
 
@@ -16,7 +18,9 @@ export const IngredientRow = ({
     if (!value.name) {
       onChange({
         ...ingredients[0],
-        ...value
+        ...value,
+        ingredientId: ingredients[0].id,
+        id: value.id
       })
     }
   }, [ value ]);
@@ -24,14 +28,16 @@ export const IngredientRow = ({
   const updateIngredient = ingredient => {
     onChange({
       ...value,
-      ...ingredient
+      ...ingredient,
+      ingredientId: ingredient.id || value.ingredientId,
+      id: value.id
     });
   }
 
-  const handleSelectIngredient = e => {
-    const ingredient = ingredients.find(i => i.name === e.target.value);
+  const handleSelectIngredient = v => {
+    const ingredient = ingredients.find(i => i.name === v[0].name);
     updateIngredient({
-      ingredient
+      ...ingredient
     });
   }
   
@@ -47,22 +53,25 @@ export const IngredientRow = ({
     });
   }
 
-  const currentIngredient = value.ingredient
-    && ingredients.find(i => i.id === value.ingredient.id);
+  const handleSelectNotes = e => {
+    updateIngredient({
+      notes: e.target.value
+    });
+  }
 
   return !value.name ? <></> : (
     <div className={style.formRow}>
       <Row>
-        <Col sm={5}>
-          <Form.Control
-            as="select"
-            value={value.name}
+        <Col sm={4}>
+          <Typeahead
+            id="ingredient"
+            labelKey="name"
             onChange={handleSelectIngredient}
-          >
-            {ingredients.map((u, i) => 
-              <option key={u.id}>{u.name}</option>
+            options={ingredients.map(u => 
+              ({ name: u.name })
             )}
-          </Form.Control>
+            placeholder="Select"
+          />
         </Col>
 
         <Col sm={3}>
@@ -75,7 +84,7 @@ export const IngredientRow = ({
           />
         </Col>
 
-        <Col sm={3}>
+        <Col sm={2}>
           <Form.Control
             as="select"
             value={value.unit || ""}
@@ -86,6 +95,14 @@ export const IngredientRow = ({
                 <option key={u}>{u}</option>
               )}
           </Form.Control>
+        </Col>
+
+        <Col sm={2}>
+          <Form.Control
+            placeholder="Notes"
+            onChange={handleSelectNotes}
+            value={value.notes}
+          />
         </Col>
 
         <Col sm={1}>

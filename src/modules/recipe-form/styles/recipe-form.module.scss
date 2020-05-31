@@ -78,3 +78,22 @@
     outline: none;
   }
 }
+
+.recipeSection {
+  border: 1px solid #ccc;
+  padding: 20px;
+  position: relative;
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  .deleteSectionBtn {
+    background: transparent;
+    border: none;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 10px;
+  }
+}

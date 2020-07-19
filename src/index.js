@@ -6,8 +6,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import './index.css';
 
+// @TODO move to env vars
+const isDev = true;
+const host = isDev
+  ? 'http://localhost:3001'
+  : 'http://foodventure-official.com';
+
 const client = new ApolloClient({
-  uri: 'http://localhost:3001/graphql'
+  uri: `${host}/api/graphql`
 });
 
 ReactDOM.render(

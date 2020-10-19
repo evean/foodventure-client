@@ -1,4 +1,5 @@
 @import '../../common/styles/common.module.scss';
+@import '../../common/styles/colors.module.scss';
 
 .container {
   margin: 0 auto;
@@ -12,13 +13,20 @@
 }
 
 .header {
-  background-color: yellow;
+  background-color: $brandOrange;
+  background-image: url(../../assets/img_bg@2x.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
   display: block;
-  height: 80px;
+  height: 853px;
 }
 
 .footer {
-  background-color: red;
+  background-color: $brandOrange;
+  color: white;
   display: block;
+  font-size: 12px;
   height: 40px;
+  padding-right: 20px;
+  text-align: right;
 }

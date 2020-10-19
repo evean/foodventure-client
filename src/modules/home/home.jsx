@@ -12,7 +12,8 @@ export const Home = () => {
   return (
     <>
       <Hero />
-
+      
+      {/*
       <div className={style.homeContent}>
         {recipes &&
           <>
@@ -30,6 +31,7 @@ export const Home = () => {
           </>
         }
       </div>
+      */}
     </>
   );
 };

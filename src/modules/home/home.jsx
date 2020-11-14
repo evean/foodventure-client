@@ -17,7 +17,7 @@ export const Home = () => {
       <div className={style.comingSoon}>
         <h2>Coming soon!</h2>
         <p>In the meantime, if you've got a recipe you'd like to share please submit it <Link to="recipe-form">here</Link>.</p>
-        <img className={style.welcomeImage} src="welcome.png" />
+        <div className={style.welcomeImage} />
       </div>
       
       {/*

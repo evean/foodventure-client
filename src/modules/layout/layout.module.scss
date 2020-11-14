@@ -10,23 +10,52 @@
 
 .layout {
   @extend .container;
+  background-color: $brandLightGrey;
+  min-height: 100vh;
+  padding-top: 0;
 }
 
 .header {
   background-color: $brandOrange;
   background-image: url(../../assets/img_bg@2x.png);
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: cover;
   display: block;
-  height: 853px;
+  height: 400px; //853px;
 }
 
 .footer {
   background-color: $brandOrange;
-  color: white;
+  color: $white;
   display: block;
   font-size: 12px;
   height: 40px;
   padding-right: 20px;
   text-align: right;
+  padding: 10px;
+}
+
+.searchBar {
+  background-color: $white;
+  display: flex;
+  height: 96px;
+  transform: translateY(-45px);
+  width: 100%;
+
+  button {
+    background-color: transparent;
+    border: none;
+    padding-left: 20px;
+
+    svg {
+      font-size: 2rem;
+    }
+  }
+
+  input {
+    border: none;
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    width: 100%;
+  }
 }

@@ -21,7 +21,8 @@ export const RecipeFormView = props => {
         key={recipe.id}
         type="button"
         className={style.recipeListItem}
-        onClick={() => setSelectedRecipe(recipe)}
+        onClick={() => {}}
+        //onClick={() => setSelectedRecipe(recipe)}
       >
         {recipe.name}
       </button>

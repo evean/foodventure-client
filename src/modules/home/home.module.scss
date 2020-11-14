@@ -1,3 +1,23 @@
+@import '../../common/styles/common.module.scss';
+@import '../../common/styles/colors.module.scss';
+
 .homeContent {
 
+}
+
+.comingSoon {
+  text-align: center;
+
+  h2 {
+    margin: 40px 0;
+  }
+
+  a {
+    color: $brandOrange;
+
+    &:hover {
+      color: $brandOrange;
+      text-decoration: underline;
+    }
+  }
 }

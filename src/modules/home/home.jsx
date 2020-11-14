@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { Hero } from './hero';
 import { RecipeCards } from '../../components/recipe-cards/recipe-cards';
@@ -12,6 +13,11 @@ export const Home = () => {
   return (
     <>
       <Hero />
+
+      <div className={style.comingSoon}>
+        <h2>Coming soon!</h2>
+        <p>In the meantime, if you've got a recipe you'd like to share please submit it <Link to="recipe-form">here</Link>.</p>
+      </div>
       
       {/*
       <div className={style.homeContent}>

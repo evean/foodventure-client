@@ -6,7 +6,6 @@ import style from './hero.module.scss';
 export const Hero = () => {
   return (
     <div className={style.hero}>
-      <div className={style.comingSoon}>Coming soon...</div>
       <div className={style.heroContent}>
         {/*<DishOfTheDay />*/}
       </div>

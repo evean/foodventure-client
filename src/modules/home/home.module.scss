@@ -21,3 +21,12 @@
     }
   }
 }
+
+.welcomeImage {
+  margin-top: 30px;
+  width: 50%;
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+}

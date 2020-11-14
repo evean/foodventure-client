@@ -1,6 +1,10 @@
 @import '../../common/styles/common.module.scss';
 @import '../../common/styles/colors.module.scss';
 
+body {
+  background-color: $brandLightGrey !important;
+}
+
 .container {
   margin: 0 auto;
   max-width: 100%;

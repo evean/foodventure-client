@@ -14,7 +14,7 @@ function App() {
       <Layout>
         <Switch>
       
-          <Route path="/recipe-form" component={RecipeFormViewContainer} />
+          <Route path="/recipe-form/" component={RecipeFormViewContainer} />
           <Route path="/" component={Home} />
       
         </Switch>

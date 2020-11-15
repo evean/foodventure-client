@@ -3,6 +3,10 @@
 
 .nav {
   padding-top: 38px;
+
+  @media (max-width: 767px) {
+    padding-top: 20px;
+  }
 }
 
 .logo {
@@ -13,8 +17,29 @@
   width: 257px;
 }
 
+.mobileNavWrapper {
+  display: flex;
+
+  button {
+    color: $white;
+    border: none;
+    margin-right: 30px;
+  }
+}
+
 :global(.navbar) {
   a {
     color: $white !important;
   }
+}
+
+:global(.navbar-light .navbar-toggler-icon) {
+  background-image: url(../../assets/menu.svg) !important;
+}
+
+:global(.navbar-collapse.show),
+:global(.navbar-collapse.collapsing) {
+  background-color: $brandDarkGrey;
+  padding: 20px;
+  margin-top: 20px;
 }

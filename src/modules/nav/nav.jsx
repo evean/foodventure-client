@@ -7,12 +7,14 @@ export const Navigation = () => {
   return (
     <div className={style.nav}>
       <Navbar bg="transparent" expand="lg">
-        <Navbar.Brand href="/"><div className={style.logo} /></Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <div className={style.mobileNavWrapper}>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Brand href="/"><div className={style.logo} /></Navbar.Brand>
+        </div>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/recipe-form/">Submit recipe</Nav.Link>
+            <Nav.Link href="/recipe-form">Submit recipe</Nav.Link>
           </Nav>
           {/*
           <Form inline>
